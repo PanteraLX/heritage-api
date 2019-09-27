@@ -14,10 +14,6 @@ export class PartnersService {
     const person: IPerson = await this.personService.getPerson(key);
     const inEdges: any[] = (await this.collection.inEdges(person)).map((edge): string => edge._from);
     const outEdges: any[] = (await this.collection.outEdges(person)).map((edge): string => edge._to);
-    console.log(inEdges);
-    console.log(outEdges);
-
-
     const edges = [...inEdges, ...outEdges];
     const mapPerson = async (edge: any): Promise<IPerson> => this.personService.getPerson(edge);
     const parentPromise: Promise<IPerson>[] = edges.map(mapPerson);
