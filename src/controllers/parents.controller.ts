@@ -8,9 +8,12 @@ export class ParentsController {
   }
 
   public async getParents(req: Request, res: Response): Promise<Response> {
-    const key: string = req.params.key || '';
-    const children: IPerson[] = await this.parentsService.getParents(key);
-    return res.json(children);
+      try {
+          const key: string = req.params.key || '';
+          const children: IPerson[] = await this.parentsService.getParents(key);
+          return res.json(children);
+      } catch (error) {
+          res.status(400).json({message: error});
+      }
   }
 }
-

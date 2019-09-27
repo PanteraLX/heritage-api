@@ -10,11 +10,10 @@ export class UserController {
         try {
             const body: IUser = req.body;
             const user: IUser = await this.userService.authenticate(body);
-            return user ? res.json(user) : res.status(400).json({message: 'Username or password is incorrect'});
+            return user ? res.json(user) : res.status(400).json({message: 'Username oder Passwort ist falsch'});
         } catch (error) {
             res.status(400).json({message: error});
         }
-
     }
 
     public async register(req: Request, res: Response, next): Promise<Response> {
@@ -50,5 +49,3 @@ export class UserController {
         return res.json(user);
     }
 }
-
-
