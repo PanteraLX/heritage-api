@@ -18,7 +18,7 @@ export class UserService {
     public async authenticate({username, password}: IUser) {
         const user: IUser = await this.getUser(username);
         if (user && bcrypt.compareSync(password, user.password)) {
-            const {password, ...userWithoutHash} = user;
+            const {password: hash, ...userWithoutHash} = user;
             const token = jwt.sign(user._key, process.env.SECRET);
             return {
                 ...userWithoutHash,
