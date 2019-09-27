@@ -9,6 +9,7 @@ import { Express } from 'express-serve-static-core';
 import { familyRouter } from './routes/family.router';
 import { personRouter } from './routes/person.router';
 import { searchRouter } from './routes/search.router';
+import { userRouter } from './routes/user.router';
 
 export class App {
 
@@ -37,5 +38,6 @@ export class App {
         this._express.use('/search', searchRouter);
         this._express.use('/person', personRouter);
         this._express.use('/family', familyRouter);
+        this._express.use('/user', userRouter);
     }
 }

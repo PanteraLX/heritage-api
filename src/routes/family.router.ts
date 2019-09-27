@@ -9,12 +9,14 @@ import { ParentsService } from '../services/parents.service';
 import { PartnersService } from '../services/partners.service';
 import { PersonService } from '../services/person.service';
 
-const personService = new PersonService(database);
-const childrenService = new ChildrenService(database, personService);
+const db = database();
+
+const personService = new PersonService(db);
+const childrenService = new ChildrenService(db, personService);
 const childrenController = new ChildrenController(childrenService);
-const parentsService = new ParentsService(database, personService);
+const parentsService = new ParentsService(db, personService);
 const parentsController = new ParentsController(parentsService);
-const partnersService = new PartnersService(database, personService);
+const partnersService = new PartnersService(db, personService);
 const partnersController = new PartnersController(partnersService);
 
 export const familyRouter = express.Router()
