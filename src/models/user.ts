@@ -5,4 +5,5 @@ export interface IUser {
   lastname?: string;
   email?: string;
   _key: string;
+  enabled: boolean;
 }

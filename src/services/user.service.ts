@@ -18,12 +18,16 @@ export class UserService {
     public async authenticate({username, password}: IUser) {
         const user: IUser = await this.getUser(username);
         if (user && bcrypt.compareSync(password, user.password)) {
-            const {password: hash, ...userWithoutHash} = user;
-            const token = jwt.sign(user._key, process.env.SECRET);
-            return {
-                ...userWithoutHash,
-                token
-            };
+            if (user.enabled) {
+
+                const {password: hash, ...userWithoutHash} = user;
+                const token = jwt.sign(user._key, process.env.SECRET);
+                return {
+                    ...userWithoutHash,
+                    token
+                };
+            }
+            throw 'User wurde noch nicht durch Admin bestätigt';
         }
     }
 
@@ -45,7 +49,6 @@ export class UserService {
     }
 
     public async addUser(user: IUser): Promise<IUser> {
-
         // validate
         if (await this.getUser(user.username)) {
             throw 'Username "' + user.username + '" wird bereits benutzt';
@@ -58,13 +61,14 @@ export class UserService {
             user.password = bcrypt.hashSync(user.password, 10);
         }
         // save user
-
+        user.enabled = false;
         const query: GeneratedAqlQuery = aql`INSERT ${user} INTO ${this.collection}`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.next();
     }
 
     public async updateUser(user: IUser): Promise<IUser> {
+        user.enabled = false;
         const query: GeneratedAqlQuery = aql`UPDATE ${user._key} WITH ${user} IN ${this.collection}`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.next();
