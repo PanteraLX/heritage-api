@@ -1,0 +1,16 @@
+import { Request, Response } from 'express';
+import { IPerson } from '../models/person';
+import { PartnersService } from '../services/partners.service';
+
+export class PartnersController {
+
+  constructor(private partnersService: PartnersService) {
+  }
+
+  public async getParents(req: Request, res: Response): Promise<Response> {
+    const key: string = req.params.key || '';
+    const children: IPerson[] = await this.partnersService.getPartners(key);
+    return res.json(children);
+  }
+}
+

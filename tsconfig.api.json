@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/api",
+    "types": [],
+    "esModuleInterop": true
+  },
+  "files": [
+    "api/server.ts",
+    "api/polyfills.ts"
+  ],
+  "include": [
+    "api/**/*.ts"
+  ],
+  "exclude": [
+    "api/test.ts",
+    "api/**/*.spec.ts"
+  ]
+}
