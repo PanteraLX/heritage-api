@@ -1,11 +1,11 @@
 import * as express from 'express';
 import { UserController } from '../controllers/user.controller';
-import { database } from '../database/arango';
+import { ArangoDatabase } from '../database/arango';
 import { UserService } from '../services/user.service';
 
-const db = database();
+const arango = new ArangoDatabase();
 
-const userService = new UserService(db);
+const userService = new UserService(arango.database);
 const userController = new UserController(userService);
 
 export const userRouter = express.Router()

@@ -33,8 +33,6 @@ export class UserService {
         FILTER doc.username == ${username}
         RETURN doc`;
         const cursor: ArrayCursor = await this.database.query(query);
-        console.log('ahahaha');
-
         return await cursor.next();
     }
 

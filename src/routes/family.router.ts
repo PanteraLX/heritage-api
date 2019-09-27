@@ -3,20 +3,20 @@ import { ChildrenController } from '../controllers/children.controller';
 import { ParentsController } from '../controllers/parents.controller';
 import { PartnersController } from '../controllers/partners.controller';
 
-import { database } from '../database/arango';
+import { ArangoDatabase } from '../database/arango';
 import { ChildrenService } from '../services/children.service';
 import { ParentsService } from '../services/parents.service';
 import { PartnersService } from '../services/partners.service';
 import { PersonService } from '../services/person.service';
 
-const db = database();
+const arango = new ArangoDatabase();
 
-const personService = new PersonService(db);
-const childrenService = new ChildrenService(db, personService);
+const personService = new PersonService(arango.database);
+const childrenService = new ChildrenService(arango.database, personService);
 const childrenController = new ChildrenController(childrenService);
-const parentsService = new ParentsService(db, personService);
+const parentsService = new ParentsService(arango.database, personService);
 const parentsController = new ParentsController(parentsService);
-const partnersService = new PartnersService(db, personService);
+const partnersService = new PartnersService(arango.database, personService);
 const partnersController = new PartnersController(partnersService);
 
 export const familyRouter = express.Router()

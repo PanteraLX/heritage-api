@@ -23,8 +23,6 @@ export class UserController {
             const user: IUser = await this.userService.addUser(body);
             return res.json(user);
         } catch (error) {
-            console.log(error);
-            
             res.status(400).json({message: error})
         }
     }
