@@ -12,7 +12,7 @@ export class UserController {
             const user: IUser = await this.userService.authenticate(body);
             return user ? res.json(user) : res.status(400).json({message: 'Username oder Passwort ist falsch'});
         } catch (error) {
-            res.status(400).json({message: error});
+            res.status(400).json({message: error.message});
         }
     }
 
@@ -22,12 +22,12 @@ export class UserController {
             const user: IUser = await this.userService.addUser(body);
             return res.json(user);
         } catch (error) {
-            res.status(400).json({message: error});
+            res.status(400).json({message: error.message});
         }
     }
 
     public async getUser(req: Request, res: Response): Promise<Response> {
-        const username: string = req.params.username || '';
+        const username: string = (req.params as IUser).username || '';
         const person: IUser = await this.userService.getUser(username);
         return res.json(person);
     }

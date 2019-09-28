@@ -13,7 +13,7 @@ export class ChildrenController {
           const children: IPerson[] = await this.childrenService.getChildren(key);
           return res.json(children);
       } catch (error) {
-          res.status(400).json({message: error});
+          res.status(400).json({message: error.message});
       }
   }
 }

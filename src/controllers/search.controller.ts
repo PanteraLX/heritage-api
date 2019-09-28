@@ -12,7 +12,7 @@ export class SearchController {
       const children: IPerson[] = await this.searchService.search(req.body);
       return res.json(children);
     } catch (error) {
-      res.status(400).json({message: error});
+      res.status(400).json({message: error.message});
     }
   }
 
@@ -22,7 +22,7 @@ export class SearchController {
       const persons: IPerson[] = await this.searchService.simpleSearch(query);
       return res.json(persons);
     } catch (error) {
-      res.status(400).json({message: error});
+      res.status(400).json({message: error.message});
     }
   }
 }

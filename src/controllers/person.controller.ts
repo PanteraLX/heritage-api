@@ -14,7 +14,7 @@ export class PersonController {
       const person: IPerson = await this.personService.getPerson(key);
       return res.json(person);
     } catch (error) {
-      res.status(400).json({message: error});
+      res.status(400).json({message: error.message});
     }
   }
 
@@ -25,7 +25,7 @@ export class PersonController {
       const persons: IPerson[] = await this.personService.getPersons({limit, offset});
       return res.json(persons);
     } catch (error) {
-      res.status(400).json({message: error});
+      res.status(400).json({message: error.message});
     }
   }
 
@@ -35,7 +35,7 @@ export class PersonController {
       const person: IPerson = await this.personService.updatePerson(body);
       return res.json(person);
     } catch (error) {
-      res.status(400).json({message: error});
+      res.status(400).json({message: error.message});
     }
   }
 }

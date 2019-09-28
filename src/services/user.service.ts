@@ -27,23 +27,23 @@ export class UserService {
                     token
                 };
             }
-            throw 'User wurde noch nicht durch Admin bestätigt';
+            throw new Error('User wurde noch nicht durch Admin bestätigt');
         }
     }
 
     public async getUser(username: string): Promise<IUser> {
         const query: GeneratedAqlQuery = aql`
-      FOR doc IN ${this.collection}
-        FILTER doc.username == ${username}
-        RETURN doc`;
+            FOR doc IN ${this.collection}
+                FILTER doc.username == ${username}
+                RETURN doc`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.next();
     }
 
     public async getUsers(): Promise<IUser[]> {
         const query: GeneratedAqlQuery = aql`
-      FOR doc IN ${this.collection}
-        RETURN doc`;
+            FOR doc IN ${this.collection}
+                RETURN doc`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.all();
     }
@@ -51,25 +51,27 @@ export class UserService {
     public async addUser(user: IUser): Promise<IUser> {
         // validate
         if (await this.getUser(user.username)) {
-            throw 'Username "' + user.username + '" wird bereits benutzt';
+            throw new Error(`Username '${user.username}' wird bereits benutzt`);
         }
         // hash password
         if (user.password) {
-            if (user.password.length <= 8) {
-                throw 'Passwort ist zu kurz (mind. 6 Zeichen)';
+            if (user.password.length <= 6) {
+                throw new Error('Passwort ist zu kurz (mind. 6 Zeichen)');
             }
             user.password = bcrypt.hashSync(user.password, 10);
         }
         // save user
         user.enabled = false;
-        const query: GeneratedAqlQuery = aql`INSERT ${user} INTO ${this.collection}`;
+        const query: GeneratedAqlQuery = aql`
+            INSERT ${user} INTO ${this.collection}`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.next();
     }
 
     public async updateUser(user: IUser): Promise<IUser> {
         user.enabled = false;
-        const query: GeneratedAqlQuery = aql`UPDATE ${user._key} WITH ${user} IN ${this.collection}`;
+        const query: GeneratedAqlQuery = aql`
+            UPDATE ${user._key} WITH ${user} IN ${this.collection}`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.next();
     }

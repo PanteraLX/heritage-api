@@ -15,24 +15,25 @@ export class PersonService {
         key = key.replace('persons/', '');
 
         const query: GeneratedAqlQuery = aql`
-      FOR doc IN ${this.collection}
-        FILTER doc._key == ${key}
-        RETURN doc`;
+            FOR doc IN ${this.collection}
+                FILTER doc._key == ${key}
+                RETURN doc`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.next();
     }
 
     public async getPersons(options: { limit: number, offset: number }): Promise<IPerson[]> {
         const query: GeneratedAqlQuery = aql`
-      FOR doc IN ${this.collection}
-        LIMIT ${options.offset}, ${options.limit}
-        RETURN doc`;
+            FOR doc IN ${this.collection}
+                LIMIT ${options.offset}, ${options.limit}
+                RETURN doc`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.all();
     }
 
     public async updatePerson(user: IPerson): Promise<IPerson> {
-        const query: GeneratedAqlQuery = aql`UPDATE ${user._key} WITH ${user} IN ${this.collection}`;
+        const query: GeneratedAqlQuery = aql`
+            UPDATE ${user._key} WITH ${user} IN ${this.collection}`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.next();
     }

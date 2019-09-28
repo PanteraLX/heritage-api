@@ -1,4 +1,6 @@
-import { Database, EdgeCollection } from 'arangojs';
+import { aql, Database, EdgeCollection } from 'arangojs';
+import { GeneratedAqlQuery } from 'arangojs/lib/cjs/aql-query';
+import { ArrayCursor } from 'arangojs/lib/cjs/cursor';
 import { IPerson } from '../models/person';
 import { PersonService } from './person.service';
 
@@ -12,12 +14,14 @@ export class PartnersService {
 
   public async getPartners(key: string): Promise<IPerson[]> {
     const person: IPerson = await this.personService.getPerson(key);
-    const inEdges: any[] = (await this.collection.inEdges(person)).map((edge): string => edge._from);
-    const outEdges: any[] = (await this.collection.outEdges(person)).map((edge): string => edge._to);
-    const edges = [...inEdges, ...outEdges];
-    const mapPerson = async (edge: any): Promise<IPerson> => this.personService.getPerson(edge);
-    const parentPromise: Promise<IPerson>[] = edges.map(mapPerson);
-    return Promise.all(parentPromise);
+    if (!person) {
+      throw new Error(`Person mit ID '${key}' wurde nicht gefunden`);
+    }
+    const query: GeneratedAqlQuery = aql`
+            FOR vertex IN 1..1 ANY ${person} ${this.collection}
+                RETURN vertex`;
+    const cursor: ArrayCursor = await this.database.query(query);
+    return await cursor.all();
   }
 
 }
