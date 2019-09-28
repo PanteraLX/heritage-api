@@ -28,11 +28,31 @@ export class FamilyController {
         }
     }
 
+    public async getDescendants(req: Request, res: Response): Promise<Response> {
+        try {
+            const key: string = req.params.key || '';
+            const descendants: IFamily = await this.familyService.getDescendants<IFamily>(key);
+            return res.json(descendants);
+        } catch (error) {
+            res.status(400).json({message: error.message});
+        }
+    }
+
     public async getParents(req: Request, res: Response): Promise<Response> {
         try {
             const key: string = req.params.key || '';
             const children: IPerson[] = await this.familyService.getParents<IPerson>(key);
             return res.json(children);
+        } catch (error) {
+            res.status(400).json({message: error.message});
+        }
+    }
+
+    public async getAncestors(req: Request, res: Response): Promise<Response> {
+        try {
+            const key: string = req.params.key || '';
+            const ancestors: IFamily = await this.familyService.getAncestors<IFamily>(key);
+            return res.json(ancestors);
         } catch (error) {
             res.status(400).json({message: error.message});
         }

@@ -13,5 +13,7 @@ const familyController = new FamilyController(familyService);
 export const familyRouter = express.Router()
     .get('/:key', familyController.getFamily.bind(familyController))
     .get('/children/:key', familyController.getChildren.bind(familyController))
+    .get('/descendants/:key', familyController.getDescendants.bind(familyController))
     .get('/parents/:key', familyController.getParents.bind(familyController))
-    .get('/partners/:key', familyController.getParents.bind(familyController));
+    .get('/ancestors/:key', familyController.getAncestors.bind(familyController))
+    .get('/partners/:key', familyController.getPartners.bind(familyController));
