@@ -40,7 +40,8 @@ export class PersonService {
 
     public async addPerson<T extends IPerson>(person: T): Promise<T> {
         const query: GeneratedAqlQuery = aql`
-            INSERT ${person} INTO ${this.collection}`;
+            INSERT ${person} INTO ${this.collection}
+            RETURN NEW`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.next();
     }
