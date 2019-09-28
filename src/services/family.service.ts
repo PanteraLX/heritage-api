@@ -100,4 +100,24 @@ export class FamilyService {
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.all();
     }
+
+    public async addParentHood<T extends IFamily>(key: string, body): Promise<T> {
+        const insert: any = {_from: body._from._id, _to: body._to._id};
+        const query: GeneratedAqlQuery = aql`
+            INSERT ${insert} IN parentHood`;
+        const cursor: ArrayCursor = await this.database.query(query);
+        await cursor.next();
+
+        return this.getFamily<T>(key);
+    }
+
+    public async addMarriage<T extends IFamily>(key: string, body): Promise<T> {
+        const insert: any = {_from: body._from._id, _to: body._to._id};
+        const query: GeneratedAqlQuery = aql`
+            INSERT ${insert} IN marriage`;
+        const cursor: ArrayCursor = await this.database.query(query);
+        await cursor.next();
+
+        return this.getFamily<T>(key);
+    }
 }

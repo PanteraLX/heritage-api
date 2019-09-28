@@ -67,4 +67,26 @@ export class FamilyController {
             res.status(400).json({message: error.message});
         }
     }
+
+    public async addParentHood(req: Request, res: Response): Promise<Response> {
+        try {
+            const key: string = req.params.key || '';
+            const body: IPerson = req.body;
+            const person: IPerson = await this.familyService.addParentHood<IFamily>(key, body);
+            return res.json(person);
+        } catch (error) {
+            res.status(400).json({message: error.message});
+        }
+    }
+
+    public async addMarriage(req: Request, res: Response): Promise<Response> {
+        try {
+            const key: string = req.params.key || '';
+            const body: IPerson = req.body;
+            const person: IPerson = await this.familyService.addMarriage<IFamily>(key, body);
+            return res.json(person);
+        } catch (error) {
+            res.status(400).json({message: error.message});
+        }
+    }
 }
