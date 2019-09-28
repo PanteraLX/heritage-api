@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { IPerson } from '../models/person';
-import { IUser } from '../models/user';
 import { PersonService } from '../services/person.service';
 
 export class PersonController {
@@ -11,7 +10,7 @@ export class PersonController {
   public async getPerson(req: Request, res: Response): Promise<Response> {
     try {
       const key: string = req.params.key || '';
-      const person: IPerson = await this.personService.getPerson(key);
+      const person: IPerson = await this.personService.getPerson<IPerson>(key);
       return res.json(person);
     } catch (error) {
       res.status(400).json({message: error.message});
@@ -22,7 +21,7 @@ export class PersonController {
     try {
       const limit = Number.parseInt(req.query.limit || null, 10);
       const offset = Number.parseInt(req.query.offset || 0, 10);
-      const persons: IPerson[] = await this.personService.getPersons({limit, offset});
+      const persons: IPerson[] = await this.personService.getPersons<IPerson>({limit, offset});
       return res.json(persons);
     } catch (error) {
       res.status(400).json({message: error.message});
