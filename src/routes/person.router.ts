@@ -11,4 +11,6 @@ const personController = new PersonController(personService);
 export const personRouter = express.Router()
     .get('/:key', personController.getPerson.bind(personController))
     .get('/', personController.getPersons.bind(personController))
-    .post('/', personController.updatePerson.bind(personController));
+    .put('/', personController.updatePerson.bind(personController))
+    .post('/', personController.addPerson.bind(personController));
+

@@ -31,9 +31,16 @@ export class PersonService {
         return await cursor.all();
     }
 
-    public async updatePerson<T extends IPerson>(user: T): Promise<T> {
+    public async updatePerson<T extends IPerson>(person: T): Promise<T> {
         const query: GeneratedAqlQuery = aql`
-            UPDATE ${user._key} WITH ${user} IN ${this.collection}`;
+            UPDATE ${person._key} WITH ${person} IN ${this.collection}`;
+        const cursor: ArrayCursor = await this.database.query(query);
+        return await cursor.next();
+    }
+
+    public async addPerson<T extends IPerson>(person: T): Promise<T> {
+        const query: GeneratedAqlQuery = aql`
+            INSERT ${person} INTO ${this.collection}`;
         const cursor: ArrayCursor = await this.database.query(query);
         return await cursor.next();
     }

@@ -37,5 +37,15 @@ export class PersonController {
       res.status(400).json({message: error.message});
     }
   }
+
+  public async addPerson(req: Request, res: Response): Promise<Response> {
+    try {
+      const body: IPerson = req.body;
+      const person: IPerson = await this.personService.addPerson<IPerson>(body);
+      return res.json(person);
+    } catch (error) {
+      res.status(400).json({message: error.message});
+    }
+  }
 }
 
