@@ -1,0 +1,15 @@
+{
+    "apps": [
+        {
+            "name": "heritage-api",
+            "script": "index.ts",
+            "watch": ["src"],
+            "ignore_watch": ["node_modules"],
+            "watch_options": {
+                "followSymlinks": false
+            },
+            "instances": "max",
+            "exec_mode": "cluster"
+        }
+    ]
+}
