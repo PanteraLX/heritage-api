@@ -15,6 +15,7 @@ const userController = new UserController(userService);
 export const personRouter = express.Router()
     .get('/:key', userController.isAuthenticated.bind(userController), personController.getPerson.bind(personController))
     .get('/', userController.isAuthenticated.bind(userController), personController.getPersons.bind(personController))
+    .post('/', userController.isAuthenticated.bind(userController), personController.getPersonsByQuery.bind(personController))
     .put('/', userController.isAuthenticated.bind(userController), personController.updatePerson.bind(personController))
     .post('/', userController.isAuthenticated.bind(userController), personController.addPerson.bind(personController));
 

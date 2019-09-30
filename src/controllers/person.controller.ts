@@ -19,9 +19,16 @@ export class PersonController {
 
   public async getPersons(req: Request, res: Response): Promise<Response> {
     try {
-      const limit = Number.parseInt(req.query.limit || null, 10);
-      const offset = Number.parseInt(req.query.offset || 0, 10);
-      const persons: IPerson[] = await this.personService.getPersons<IPerson>({limit, offset});
+      const persons: IPerson[] = await this.personService.getPersons<IPerson>();
+      return res.json(persons);
+    } catch (error) {
+      res.status(400).json({message: error.message});
+    }
+  }
+
+  public async getPersonsByQuery(req: Request, res: Response): Promise<Response> {
+    try {
+      const persons: IPerson[] = await this.personService.getPersonsByQuery<IPerson>(req.body);
       return res.json(persons);
     } catch (error) {
       res.status(400).json({message: error.message});
