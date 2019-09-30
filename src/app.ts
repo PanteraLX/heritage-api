@@ -30,7 +30,7 @@ export class App {
     private mountMiddleware() {
         //this.express.use(compression());
         //this.express.use(helmet());
-        this.express.use(helmet.hidePoweredBy({ setTo: 'PHP 5.3.0' }));
+        //this.express.use(helmet.hidePoweredBy({ setTo: 'PHP 5.3.0' }));
         this.express.use(cors());
         this.express.use(bodyParser.json());
         this.express.use(logger('dev'));
