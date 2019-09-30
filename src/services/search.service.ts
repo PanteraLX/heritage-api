@@ -33,7 +33,7 @@ export class SearchService {
             AND PHRASE(doc.surName, ${surName}))
           OR (PHRASE(doc.givenName, ${surName})
             AND PHRASE(doc.surName, ${givenName}))
-          (PHRASE(doc.givenName, ${givenName})
+          OR (PHRASE(doc.givenName, ${givenName})
             AND PHRASE(doc.birthName, ${surName}))
           OR (PHRASE(doc.givenName, ${surName})
             AND PHRASE(doc.birthName, ${givenName}))

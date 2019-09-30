@@ -3,7 +3,7 @@ import { GeneratedAqlQuery } from 'arangojs/lib/cjs/aql-query';
 import { ArrayCursor } from 'arangojs/lib/cjs/cursor';
 import { IPerson } from '../models/person';
 
-interface DataTablesResponse<T> {
+export interface DataTablesResponse<T> {
     data: T[];
     draw: number;
     recordsFiltered: number;

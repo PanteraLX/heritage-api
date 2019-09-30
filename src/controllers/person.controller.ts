@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { IPerson } from '../models/person';
-import { PersonService } from '../services/person.service';
+import { DataTablesResponse, PersonService } from '../services/person.service';
 
 export class PersonController {
 
@@ -28,7 +28,7 @@ export class PersonController {
 
   public async getPersonsByQuery(req: Request, res: Response): Promise<Response> {
     try {
-      const persons: IPerson[] = await this.personService.getPersonsByQuery<IPerson>(req.body);
+      const persons: DataTablesResponse<IPerson> = await this.personService.getPersonsByQuery<IPerson>(req.body);
       return res.json(persons);
     } catch (error) {
       res.status(400).json({message: error.message});
