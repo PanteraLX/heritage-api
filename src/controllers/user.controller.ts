@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import * as jwt from 'jsonwebtoken';
 import { IUser } from '../models/user';
 import { UserService } from '../services/user.service';
 
@@ -13,6 +14,16 @@ export class UserController {
             return user ? res.json(user) : res.status(400).json({message: 'Username oder Passwort ist falsch'});
         } catch (error) {
             res.status(400).json({message: error.message});
+        }
+    }
+
+    public async isAuthenticated(req: Request, res: Response, next): Promise<boolean> {
+        try {
+            const token: string = req.body.token || req.query.token || req.headers['authorization'];
+            await this.userService.isAuthenticated(token);
+            return next();
+        } catch (error) {
+            res.status(401).json({message: error.message});
         }
     }
 

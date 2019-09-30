@@ -14,4 +14,4 @@ export const userRouter = express.Router()
     .get('/', userController.getUsers.bind(userController))
     .get('/current', userController.getCurrent.bind(userController))
     .get('/:id', userController.getUser.bind(userController))
-    .put('/:id', userController.updateUser.bind(userController));
+    .put('/:id', userController.isAuthenticated.bind(userController), userController.updateUser.bind(userController));

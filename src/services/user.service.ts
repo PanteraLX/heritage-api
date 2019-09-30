@@ -16,17 +16,23 @@ export class UserService {
     public async authenticate<T extends IUser>({username, password}: T) {
         const user: T = await this.getUser<T>(username);
         if (user && bcrypt.compareSync(password, user.password)) {
-            if (user.enabled) {
-
-                const {password: hash, ...userWithoutHash} = user;
-                const token = jwt.sign(user._key, process.env.SECRET);
-                return {
-                    ...userWithoutHash,
-                    token
-                };
+            if (!user.enabled) {
+                throw new Error('User wurde noch nicht durch Admin bestätigt');
             }
-            throw new Error('User wurde noch nicht durch Admin bestätigt');
+            const {password: hash, ...userWithoutHash} = user;
+            const token = jwt.sign(user._key, process.env.SECRET);
+            return {
+                ...userWithoutHash,
+                token
+            };
         }
+    }
+
+    public async isAuthenticated(token: string): Promise<object | string> {
+        if (!token) {
+            throw new Error('No token provided');
+        }
+        return jwt.verify(token, process.env.SECRET);
     }
 
     public async getUser<T extends IUser>(username: string): Promise<T> {
