@@ -3,6 +3,8 @@ import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as logger from 'morgan';
+import * as compression from 'compression';
+import * as helmet from 'helmet';
 
 import { Express } from 'express-serve-static-core';
 
@@ -26,18 +28,20 @@ export class App {
     }
 
     private mountMiddleware() {
-        this._express.use(cors());
-        this._express.use(bodyParser.json());
-        this._express.use(logger('dev'));
-        this._express.use(express.json());
-        this._express.use(express.urlencoded({extended: false}));
-        this._express.use(cookieParser());
+        this.express.use(compression());
+        this.express.use(helmet())
+        this.express.use(cors());
+        this.express.use(bodyParser.json());
+        this.express.use(logger('dev'));
+        this.express.use(express.json());
+        this.express.use(express.urlencoded({extended: false}));
+        this.express.use(cookieParser());
     }
 
     private mountRoutes(): void {
-        this._express.use('/search', searchRouter);
-        this._express.use('/person', personRouter);
-        this._express.use('/family', familyRouter);
-        this._express.use('/user', userRouter);
+        this.express.use('/search', searchRouter);
+        this.express.use('/person', personRouter);
+        this.express.use('/family', familyRouter);
+        this.express.use('/user', userRouter);
     }
 }
