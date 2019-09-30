@@ -23,7 +23,7 @@ export class SearchService {
   }
 
   public async simpleSearch(params: string): Promise<IPerson[]> {
-    const [givenName, surName] = params.split(' ');
+    const [givenName, surName] = params.trim().split(' ');
     let query: GeneratedAqlQuery;
     if (givenName && surName) {
       query = aql`
@@ -33,6 +33,10 @@ export class SearchService {
             AND PHRASE(doc.surName, ${surName}))
           OR (PHRASE(doc.givenName, ${surName})
             AND PHRASE(doc.surName, ${givenName}))
+          (PHRASE(doc.givenName, ${givenName})
+            AND PHRASE(doc.birthName, ${surName}))
+          OR (PHRASE(doc.givenName, ${surName})
+            AND PHRASE(doc.birthName, ${givenName}))
           , "text_de")
         RETURN doc`;
     } else if (givenName) {
