@@ -80,10 +80,10 @@ export class FamilyService {
                 throw new Error(`Person mit ID '${person}' wurde nicht gefunden`);
             }
         }
-        const directAncestors: IFamily[] = await this.getChildren<IFamily>(person);
+        const directAncestors: IFamily[] = await this.getParents<IFamily>(person);
         const patentsPromise: Promise<IFamily>[] = directAncestors
             .map((child: IFamily): Promise<IFamily> => this.getAncestors<IFamily>(child));
-        person.parents = await Promise.all(patentsPromise);
+        person.children = await Promise.all(patentsPromise);
         return person;
     }
 
